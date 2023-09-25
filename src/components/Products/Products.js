@@ -2,22 +2,27 @@ import React, { useState, useEffect } from 'react';
 import fetchProducts from '../../api/fetchProducts';
 import ProductCard from '../ProductCard/ProductCard';
 import './Products.css';
+import Loading from '../Loading/Loading';
 
 function Products() {
 
   const [products, setProducts] = useState([]);
+  const [loading, setLoading ] = useState(true);
 
   useEffect(() => {
-
     fetchProducts('iphone').then((response) => {
       setProducts(response);
+      setLoading(false);
     });
   }, []);
 
   return(
-    <section className="products container">
+    (loading && <Loading/>) || (
+      <section className="products container">
+      <Loading/>
       { products.map((product) => <ProductCard key={product.id} data={product} />) }
     </section>
+    )
   );
 }
 
